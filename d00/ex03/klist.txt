@@ -1,0 +1,5 @@
+Credentials cache: API:97260322-63FD-4688-BCDE-0C291A436510
+        Principal: alucas-@42.FR
+
+  Issued                Expires             Flags    Principal
+Jul  3 11:32:43 2017  Jul 10 11:32:35 2017  FPIA   krbtgt/42.FR@42.FR
