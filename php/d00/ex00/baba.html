@@ -1,54 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
-    <title>B.A.BA</title>
+  <meta charset='UTF-8'>
+  <title>B.A.BA</title>
 </head>
-<style>
-    .grid {
-    display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 10px;
-        grid-auto-rows: minmax(100px, auto);
-    }
-    .one {
-        grid-column: 1 / 2;
-        grid-row: 1;
-    }
-    .two {
-        grid-column: 2 / 2;
-        grid-row: 1;
-    }
-    .three {
-        grid-column: 1 / 2;
-        grid-row: 2 / 2;
-    }
-    .four {
-        grid-column: 2 / 2;
-        grid-row: 2 / 2;
-    }
-    p {
-        font-family: "Courier New", sans-serif;
-        font-style: italic;
-    }
-</style>
-<body style="background: pink">
-<h1 style="text-align: center; color: white">Je suis titré</h1>
-<div class="grid">
-    <div class="one">
-        <img src="https://www.pizzahut.fr/assets/images/pizzahut-logo.png">
-    </div>
-    <div class="three">
-        <a href="https://www.pizzahut.fr">Pizza hut</a>
-    </div>
-    <div class="two">
-        <img src="https://www.pizzahut.fr/assets/images/pizzahut-logo.png">
-    </div>
-    <div class="four">
-        <a href="https://www.pizzahut.fr">Pizza hut</a>
-    </div>
-</div>
-<hr>
-<p>© alucas- 2018</p>
+<body style='background: pink'>
+  <h1 style='text-align: center; color: white'>Je suis titré</h1>
+  <div style='text-align: center'>
+    <figure style='display: inline-block'>
+      <img src='https://www.pizzahut.fr/assets/images/pizzahut-logo.png'>
+      <figcaption>
+        <a href='https://www.pizzahut.fr'>Pizza hut</a>
+      </figcaption>
+    </figure>
+    <figure style='display: inline-block'>
+      <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Domino%27s_pizza_logo.svg/280px-Domino%27s_pizza_logo.svg.png'>
+      <figcaption>
+        <a href='https://www.dominos.fr/'>Dominos Pizza</a>
+      </figcaption>
+    </figure>
+  </div>
+  <hr>
+  <p style='text-align: right; font-style: italic; font-family: "Courier New", sans-serif'>© alucas- 2018</p>
 </body>
 </html>
