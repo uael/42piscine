@@ -7,9 +7,9 @@ $c = [];
 foreach ($argv as $arg) {
   $arr = preg_split("/[\s]+/", trim($arg));
   foreach ($arr as $word) {
-    if (($word[0] >= 'a' && $word[0] <= 'z') || ($word[0] >= 'A' && $word[0] <= 'Z'))
+    if (ctype_alpha($word[0]))
       $a[] = $word;
-    else if ($word[0] >= '0' && $word[0] <= '9')
+    else if (ctype_digit($word[0]))
       $b[] = $word;
     else
       $c[] = $word;
