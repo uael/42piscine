@@ -12,7 +12,6 @@ window.onload = function () {
         p.onclick = function (e) {
           if (confirm("Delete ?")) {
             e.target.remove();
-            cookie(list)
           }
         };
         list.appendChild(p);

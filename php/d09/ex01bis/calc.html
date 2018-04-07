@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <div style="display: block">
+    <input type="text" title="input-left" id="input-left" value="0">
+    <select title="operator" id="operator">
+      <option value="+" selected>+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+      <option value="%">%</option>
+    </select>
+    <input type="text" title="input-right" id="input-right" value="0">
+    <input type="submit" title="input-submit" id="input-submit" value="Try me!">
+
+    <script type="text/javascript">
+      var inputLeft = $('#input-left');
+      var operator = $('#operator');
+      var inputRight = $('#input-right');
+      var submit = $('#input-submit');
+
+      submit.click(function (e) {
+        var a = parseInt(inputLeft.val());
+        var b = parseInt(inputRight.val());
+        var o = operator.val();
+        var r = 'Error :(';
+
+        if (/^[0-9]+$/.test(inputLeft.val()) && /^[0-9]+$/.test(inputRight.val())) {
+          switch (o) {
+            case '+': r = a + b; break;
+            case '-': r = a - b; break;
+            case '*': r = a * b; break;
+            case '/': r = b ? a / b : 'It’s over 9000'; break;
+            case '%': r = b ? a % b : 'It’s over 9000'; break;
+            default: r = 'Error :('; break
+          }
+        }
+        console.log(r);
+        alert(r);
+        e.preventDefault()
+      });
+
+      setInterval(function() {
+        alert('Please, use. me..');
+      }, 30000);
+    </script>
+  </div>
+</body>
+</html>

@@ -39,7 +39,6 @@
         };
 
         balloon.onmouseout = function (e) {
-          console.debug('zgeg');
           if ((size -= 5) < 200)
             size = 200;
           colorit(e.target, color += 2);
