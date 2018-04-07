@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div style="display: block">
+    <input type="text" title="input-left" id="input-left" value="0">
+    <select title="operator" id="operator">
+      <option value="+" selected>+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+      <option value="%">%</option>
+    </select>
+    <input type="text" title="input-right" id="input-right" value="0">
+    <input type="submit" title="input-submit" id="input-submit" value="Try me!">
+
+    <script type="text/javascript">
+      var inputLeft = document.getElementById('input-left');
+      var operator = document.getElementById('operator');
+      var inputRight = document.getElementById('input-right');
+      var submit = document.getElementById('input-submit');
+
+      submit.onclick = function (e) {
+        var a = parseInt(inputLeft.value);
+        var b = parseInt(inputRight.value);
+        var o = operator.value;
+        var r = 'Error :(';
+
+        if (/^[0-9]+$/.test(inputLeft.value) && /^[0-9]+$/.test(inputRight.value)) {
+          switch (o) {
+            case '+': r = a + b; break;
+            case '-': r = a - b; break;
+            case '*': r = a * b; break;
+            case '/': r = b ? a / b : 'It’s over 9000'; break;
+            case '%': r = b ? a % b : 'It’s over 9000'; break;
+            default: r = 'Error :('; break
+          }
+        }
+        console.log(r);
+        alert(r);
+        e.preventDefault()
+      };
+
+      setInterval(function() {
+        alert('Please, use. me..');
+      }, 30000);
+    </script>
+  </div>
+</body>
+</html>
