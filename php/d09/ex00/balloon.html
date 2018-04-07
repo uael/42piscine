@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    #balloon {
+      background-color: red;
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div id="balloon">
+    <script type="text/javascript">
+      var balloon = document.getElementById('balloon');
+
+      if (balloon) {
+        var color = 0;
+        var size = balloon.offsetWidth;
+
+        function colorit(balloon, color) {
+          switch (color % 3) {
+            case 0: balloon.style.backgroundColor = 'red'; break;
+            case 1: balloon.style.backgroundColor = 'green'; break;
+            case 2: balloon.style.backgroundColor = 'blue'; break;
+          }
+        }
+
+        balloon.onclick = function (e) {
+          if ((size += 10) > 420)
+            size = 200;
+          colorit(e.target, color += 1);
+          e.target.style.width = size + 'px';
+          e.target.style.height = size + 'px';
+        };
+
+        balloon.onmouseout = function (e) {
+          console.debug('zgeg');
+          if ((size -= 5) < 200)
+            size = 200;
+          colorit(e.target, color += 2);
+          e.target.style.width = size + 'px';
+          e.target.style.height = size + 'px';
+        };
+      }
+    </script>
+  </div>
+</body>
+</html>
