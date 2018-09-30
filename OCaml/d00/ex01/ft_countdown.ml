@@ -14,6 +14,6 @@ let ft_countdown x =
   for i = x downto 0 do print_int i; print_char '\n' done
 
 let () =
-  ft_countdown 3;;
-  ft_countdown 0;;
-  ft_countdown (-1);;
+  ft_countdown 3;
+  ft_countdown 0;
+  ft_countdown (-1)
