@@ -1,5 +1,4 @@
 #include <string>
-#include <ostream>
 #include <iostream>
 
 namespace zob {
