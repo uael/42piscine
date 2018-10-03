@@ -1,3 +1,6 @@
+#ifndef PONY_HPP
+# define PONY_HPP
+
 #include <iostream>
 
 namespace zob {
@@ -11,3 +14,5 @@ namespace zob {
 		void run();
 	};
 }
+
+#endif /* !PONY_HPP */
