@@ -11,6 +11,6 @@ zob::Zombie::~Zombie() {
 }
 
 void zob::Zombie::announce() const {
-	std::cout << "<" << name << " (" << type << ")> > Braiiiiiiinnnssss..."
+	std::cout << "<" << name << " (" << type << ")> Braiiiiiiinnnssss..."
 	          << std::endl;
 }
