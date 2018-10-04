@@ -28,5 +28,5 @@ int zob::Fixed::getRawBits() const {
 
 void zob::Fixed::setRawBits(int const value) {
 	std::cout << "setRawBits member function called" << std::endl;
-	Fixed::value = static_cast<int>(static_cast<float>(value << Fixed::fbits));;
+	Fixed::value = static_cast<int>(static_cast<float>(value << Fixed::fbits));
 }
