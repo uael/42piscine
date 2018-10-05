@@ -9,16 +9,16 @@ clean:
 	$(OCB) -clean
 
 native:
-	$(OCB) gardening.native
+	$(OCB) main.native
 
 byte:
-	$(OCB) gardening.byte
+	$(OCB) main.byte
 
 profile:
-	$(OCB) -tag profile gardening.native
+	$(OCB) -tag profile main.native
 
 debug:
-	$(OCB) -tag debug gardening.byte
+	$(OCB) -tag debug main.byte
 
 test: native
-	./gardening.native
+	./main.native

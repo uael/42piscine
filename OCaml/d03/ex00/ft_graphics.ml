@@ -38,11 +38,3 @@ let draw_tree_node n =
       draw_square (dx + 100) (dy - 50) ss;
       draws (dx + 100) (dy - 50) "Nil";
 		end
-
-let () =
-	Graphics.open_graph "";
-	if Graphics.read_key () = 'n' then
-		draw_tree_node (Nil)
-	else
-		draw_tree_node (Node ("Lul", Nil, Nil));
-	ignore (Graphics.read_key ())
