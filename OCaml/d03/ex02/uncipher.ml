@@ -7,6 +7,6 @@ let unrot42 s =
 let xor n s =
   Cipher.xor n s
 
-let rec ft_uncrypt n s = function
+let rec ft_uncrypt s = function
 |	[] -> s
-| h::t -> ft_uncrypt n (h n s) t
+| h::t -> ft_uncrypt (h s) t

@@ -8,6 +8,6 @@ let rot42 s =
 let xor n s =
   String.map (fun c -> char_of_int (n lxor (int_of_char c))) s
 
-let rec ft_crypt n s = function
+let rec ft_crypt s = function
 |	[] -> s
-| h::t -> ft_crypt n (h n s) t
+| h::t -> ft_crypt (h s) t

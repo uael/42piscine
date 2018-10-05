@@ -8,6 +8,6 @@ let () =
   let d = xor 42 e in
   print_endline d;
 
-  let e = ft_crypt   42 s [xor; xor;   caesar; xor;   caesar] in
-  let d = ft_uncrypt 42 e [xor; xor; uncaesar; xor; uncaesar] in
+  let e = ft_crypt   s [(xor 23);   (caesar 42); (xor 64);   (caesar 21)] in
+  let d = ft_uncrypt e [(uncaesar 21); (xor 64); (uncaesar 42); (xor 23)] in
   print_endline d
