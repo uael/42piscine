@@ -1,6 +1,6 @@
 .PHONY:	all clean byte native profile debug test
 
-OCB_FLAGS = -tag bin_annot -lib graphics
+OCB_FLAGS = -tag bin_annot
 OCB = 		ocamlbuild $(OCB_FLAGS)
 
 all: native byte # profile debug
