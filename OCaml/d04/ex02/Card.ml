@@ -126,11 +126,11 @@ let compare (v1, _) (v2, _) =
 
 let max a b = match compare a b with
 | 0 | 1 -> a
-| -1 -> b
+| _ -> b
 
 let min a b = match compare a b with
 | 0 | -1 -> a
-| 1 -> b
+| _ -> b
 
 let best = function
 | [] -> invalid_arg "invalid operation, you idiot"
