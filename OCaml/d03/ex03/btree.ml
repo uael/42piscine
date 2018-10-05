@@ -44,6 +44,6 @@ let rec delete_bst v = function
 | Node(i, Nil, Nil) when v = i -> Nil
 | Node(i,   l, Nil) when v = i -> l
 | Node(i, Nil,   r) when v = i -> r
-| Node(i,   l,   r) when v = i -> Node(max_bst l, delete_bst v l, r)
+| Node(i,   l,   r) when v = i -> Node(max_bst r, l, delete_bst (max_bst r) r)
 | Node(i,   l,   r) when v < i -> Node(i, delete_bst v l, r)
 | Node(i,   l,   r) -> Node(i, l, delete_bst v r)
