@@ -7,7 +7,7 @@ let rec size = function
 let rec height = function
 | Nil -> 0
 | Node(_, l, r) ->
-  1 + let ls = size l in let lr = size r in if ls > lr then ls else lr
+  1 + let ls = height l in let lr = height r in if ls > lr then ls else lr
 
 let draw_tree t =
   let ss = 40 in let sw = ss / 2 in let sh = ss / 4 in
@@ -30,4 +30,5 @@ let draw_tree t =
         draw_child ((sh * (height r)) * -1) r;
       end
     end
-  in draw_node 30 (((height t) * sh) + 30) t
+  in let r_height = function | Nil -> 0 | Node(_, _, r) -> height r
+  in draw_node 30 (((1 lsl ((r_height t) - 1)) * sw) + 5) t
