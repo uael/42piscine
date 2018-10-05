@@ -6,47 +6,31 @@ let rec size = function
 
 let rec height = function
 | Nil -> 0
-| Node(_, l, r) -> 1 +
-	let ls = size l in
-	let lr = size r in
-	if ls > lr then ls else lr
-
-let draw_square x y size =
-	let w = size / 2 in
-	let h = size / 4 in begin
-		Graphics.moveto (x - w) (y - h);
-		Graphics.lineto (x - w) (y + h); Graphics.lineto (x + w) (y + h);
-		Graphics.lineto (x + w) (y - h); Graphics.lineto (x - w) (y - h)
-	end
-
-let ss = 40
+| Node(_, l, r) ->
+	1 + let ls = size l in let lr = size r in if ls > lr then ls else lr
 
 let draw_tree t =
-	let rec draw_tree_node dx dy n =
-		let draws x y s = begin
-			draw_square dx dy ss;
-			Graphics.moveto (x - (ss / 2) + 5) (y - 5); Graphics.draw_string s
-		end in
+	let ss = 40 in let sw = ss / 2 in let sh = ss / 4 in
+	let rec draw_node x y n =
 		match n with
 		| Nil -> ()
 		| Node(v, l, r) -> begin
-			let draw_child y = function
+			let draw_child d = function
 			| Nil -> ()
 			| c -> begin
-					Graphics.moveto (dx + (ss / 2)) dy;
-          Graphics.lineto (dx + (ss * 2) - (ss / 2)) (dy + y);
-          draw_tree_node (dx + (ss * 2)) (dy + y) c
-				end
+				Graphics.moveto (x + sw) y; Graphics.lineto (x + (ss * 2) - sw) (y + d);
+        draw_node (x + (ss * 2)) (y + d) c
+			end
 			in begin
-				draws dx dy v;
-				draw_child (((ss / 4) * (height l)) *  1) l;
-				draw_child (((ss / 4) * (height r)) * -1) r;
+				Graphics.moveto (x - sw) (y - sh);
+        Graphics.lineto (x - sw) (y + sh); Graphics.lineto (x + sw) (y + sh);
+        Graphics.lineto (x + sw) (y - sh); Graphics.lineto (x - sw) (y - sh);
+        Graphics.moveto (x - sw + 5) (y - 5); Graphics.draw_string v;
+				draw_child ((sh * (height l)) *  1) l;
+				draw_child ((sh * (height r)) * -1) r;
 			end
 		end
-	in let rec pretty_height = function
-	| Nil -> 0
-	| Node(_, _, r) -> (1 + (height r))
-	in draw_tree_node 30 (((pretty_height t) * 20) + 10) t
+	in draw_node 30 (((height t) * sh) + 30) t
 
 let () =
 	Graphics.open_graph "";
