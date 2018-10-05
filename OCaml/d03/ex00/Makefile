@@ -9,16 +9,16 @@ clean:
 	$(OCB) -clean
 
 native:
-	$(OCB) main.native
+	$(OCB) ft_graphics.native
 
 byte:
-	$(OCB) main.byte
+	$(OCB) ft_graphics.byte
 
 profile:
-	$(OCB) -tag profile main.native
+	$(OCB) -tag profile ft_graphics.native
 
 debug:
-	$(OCB) -tag debug main.byte
+	$(OCB) -tag debug ft_graphics.byte
 
 test: native
-	./main.native "OCaml" "OCamlBuild" "users"
+	./ft_graphics.native
