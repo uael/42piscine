@@ -34,4 +34,5 @@ let make n : t =
     else Player.N
   in List.init (n * n) f
 
-(* let draw dx dy b : *)
+let draw dx dy b =
+  let f i m = 
