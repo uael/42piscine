@@ -50,14 +50,32 @@ let isTaken (r, c) b =
   in
   loop b.p 0
 
-(*
+
+(* TODO debug that ! *)
 let winner_of b =
+  let same value value1 = value in
+  let win p i =
+    let rec check (y, x) opey opex =
+      if ((y < 0) || (y >= b.n)) || ((x < 0) || (x >= b.n)) then true
+      else
+        let newi = y + (x * b.n) in 
+        if ((newi < 0) || (newi >= (List.length b.p))) then false else
+          let newp = List.nth b.p newi in
+          if p <> newp then false else check ((opey y 1), (opex x 1)) opey opex
+    in
+    let y = i / b.n in let x = i mod b.n in
+      ( (check ((y - 1), x) (-) same) && ( check ((y + 1), x) (+) same ) ) ||
+      ( (check (y, (x - 1)) same (-)) && ( check (y, (x + 1)) same (+) ) ) ||
+      ( (check ((y + 1), (x + 1)) (+) (+)) && ( check ((y - 1), (x - 1)) (-) (-) ) ) ||
+      ( (check ((y + 1), (x - 1)) (+) (-) ) && ( check ((y - 1), (x + 1)) (-) (+) ) )
+  in
   let rec loop l i =
     match l with
     | [] -> Player.N
-    | hd :: tl ->
-      ;
-*)
+    | hd :: tl when hd = Player.N -> loop tl (i + 1)
+    | hd :: tl -> if win hd i then hd else loop tl (i + 1)
+  in loop b.p 0
+
 let rec dump b =
   let f i a =
     print_string (Player.string_of_mark a) ;
@@ -80,14 +98,3 @@ let string_of b : string list =
     | hd :: tl -> let sepa = if ((acc mod b.n) = 0) then "" else " "  in
       loop tl (acc + 1) (line ^ sepa ^ (Player.string_of_mark hd))
   in loop b.p 0 ""
-
-let  () =
-  print_endline "** test module **\n";
-  let b = make 5 in print_endline (Printf.sprintf "make %d" 5) ;
-  let b = toggle (1, 2) Player.X b in 
-  let b = toggle (2, 0) Player.X b in 
-  let b = toggle (1, 1) Player.X b in 
-  dump b ;
-  print_endline ("istaken (1, 2) -> " ^ (string_of_bool (isTaken (1, 2) b))) ;
-  print_endline ("istaken (2, 3) -> " ^ (string_of_bool (isTaken (2, 3) b))) ;
-  List.iteri (fun i str -> print_int i ; print_char '\n' ; print_endline str) (string_of b)
