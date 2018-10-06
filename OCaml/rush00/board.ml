@@ -11,7 +11,7 @@ let toggle (r, c) m b =
 let isTaken (r, c) b =
   let i = c + (r * 3) in
   let f = function 
-    | (X : Player.m) | O -> true
+    | (Player.X : Player.m) | Player.O -> true
     | _ -> false
   in
   let rec loop l acc = match l with
@@ -29,9 +29,9 @@ let rec dump b =
   in List.iteri f b
 
 let make n : t =
-  let f i =
-    if i < 0 then failwith "negatif value"
-    else Player.N
-  in List.init (n * n) f
+  let rec m = function
+  | 0 -> []
+  | i -> Player.N::(m (i - 1))
+  in m (n * n)
 
 (* let draw dx dy b : *)
