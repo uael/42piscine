@@ -21,8 +21,21 @@ let string_of = function
 let dump p = print_endline (string_of p)
 
 let ask = function
-| (m, IA, n) -> (0 ,0)
-| (m, Human, n) -> (0 ,0)
+| (m, IA, n) -> Random.self_init (); (Random.int 8, Random.int 8)
+| p ->
+  print_endline ((string_of p) ^ "'s turn to play.");
+  let buffer = Bytes.create 5 in
+  let rec rd () =
+    let ln = read_line () in
+    if String.length ln != 3 then (print_endline "Incorrect format."; rd ())
+    else if ln.[1] != ' '    then (print_endline "Incorrect format."; rd ())
+    else let uno = (int_of_char '1') in
+      let r = ln.[0] in let c = ln.[2] in
+      match (r, c) with
+      | ('1'..'9', '1'..'9') ->
+        (((int_of_char r) - uno), ((int_of_char c) - uno))
+      | (_, _) -> print_endline "Incorrect format."; rd ()
+  in rd ()
 
 let make m k n    = (m, k, n)
 let makeHuman m n = make m Human n
