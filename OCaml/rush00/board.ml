@@ -34,11 +34,4 @@ let make n : t =
     else Player.N
   in List.init (n * n) f
 
-let () =
-  print_endline "** test Board module **\n";
-  let b = make 3 in print_endline (Printf.sprintf "make %d" 3) ;
-  dump b ; print_char '\n' ; print_endline "toggle (1, 2)" ;
-  let bplus = toggle (1, 2) Player.X b in 
-  dump bplus ;
-  print_endline ("istaken (1, 2) -> " ^ (string_of_bool (isTaken (1, 2) bplus))) ;
-  print_endline ("istaken (2, 3) -> " ^ (string_of_bool (isTaken (2, 3) bplus))) ;
+(* let draw dx dy b : *)

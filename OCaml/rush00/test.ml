@@ -5,5 +5,15 @@ let player_test () =
   let p = Player.makeHuman Player.O "Bob" in Player.dump p
 
 
+let board_test () =
+  print_endline "** test Board module **\n";
+  let b = Board.make 3 in print_endline (Printf.sprintf "make %d" 3) ;
+  Board.dump b ; print_char '\n' ; print_endline "toggle (1, 2)" ;
+  let bplus = Board.toggle (1, 2) Player.X b in 
+  Board.dump bplus ;
+  print_endline ("istaken (1, 2) -> " ^ (string_of_bool (Board.isTaken (1, 2) bplus))) ;
+  print_endline ("istaken (2, 3) -> " ^ (string_of_bool (Board.isTaken (2, 3) bplus)))
+
 let () =
-  player_test ()
+  player_test ();
+  board_test ()
