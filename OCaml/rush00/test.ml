@@ -29,7 +29,7 @@ let game_test () =
   let po = Player.makeHuman Player.O "Bob" in
   let px = Player.makeHuman Player.X "Jil" in
   let game = Game.make 3 po px in
-  game.draw game
+  Game.run game
 
 let () =
   player_test ();

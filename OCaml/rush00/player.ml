@@ -11,6 +11,9 @@ let string_of_kind = function
 | IA -> "IA"
 | Human -> "Human"
 
+let mark_of p =
+  p.m
+
 let string_of p =
   (string_of_mark p.m) ^ ": " ^ if p.k = IA then string_of_kind IA
   else (p.n ^ " (" ^ (string_of_kind p.k) ^ ")")
