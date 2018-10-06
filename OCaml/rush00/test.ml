@@ -25,7 +25,7 @@ let board_test () =
 
 let game_test () =
   print_endline "** test Game module **\n";
-  Graphics.open_graph ("");
+  (*Graphics.open_graph ("");*)
   let po = Player.makeHuman Player.O "Bob" in
   let px = Player.makeHuman Player.X "Jil" in
   let game = Game.make 3 po px in

@@ -23,7 +23,28 @@ let toggle (r, c) p g =
     g.b
   in copy g b
 
-let draw g =
+let draw_trm g =
+  let b = List.map (fun b -> Board.string_of b) g.b in
+  let rec loop_line = function
+  | line when line = g.n -> ()
+  | line -> begin
+    let rec loop_bi = function
+    | bi when bi = (g.n * g.n) && (line + 1) <> g.n ->
+      print_endline "----"
+    | bi when bi = (g.n * g.n) -> ()
+    | bi -> begin
+      let bs = List.nth b bi in
+      let s = List.nth bs line in print_string s;
+      print_char (if ((bi + 1) mod g.n) <> 0 then '|' else '\n');
+      loop_bi (bi + 1)
+    end
+    in loop_bi 0;
+    loop_line (line + 1)
+  end
+  in loop_line 0
+
+let draw_gfx g =
+  Graphics.clear_graph ();
   let rec draw_b i = function
   | [] -> ()
   | b::t -> begin
@@ -37,10 +58,10 @@ let rec run g i =
     | i when (i mod 2) = 0 -> g.o
     | i -> g.x
   in begin
-    Graphics.clear_graph (); draw g;
+    draw_trm g;
     print_endline ((Player.string_of p) ^ "'s turn to play.");
     let rec get_mv () =
-      let mv = Player.ask2 p in match mv with
+      let mv = Player.ask_trm p in match mv with
       | Player.Move(r, c) when is_taken (r, c) g ->
         (print_endline "Illegal move."; get_mv ())
       | _ -> mv

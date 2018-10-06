@@ -21,7 +21,7 @@ let string_of p =
 
 let dump p = print_endline (string_of p)
 
-let ask p =
+let ask_trm p =
   if p.k = IA then
     (Random.self_init (); Move(Random.int 8, Random.int 8))
   else let rec rd () =
@@ -38,7 +38,7 @@ let ask p =
       | (_, _) -> print_endline "Incorrect format."; rd ()
   in rd ()
 
-let ask2 p =
+let ask_gfx p =
   if p.k = IA then
     (Random.self_init (); Move(Random.int 8, Random.int 8))
   else let rec rd () =
