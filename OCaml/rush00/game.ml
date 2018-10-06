@@ -19,7 +19,7 @@ let draw g =
   | [] -> ()
   | b::t -> begin
     let x = i mod g.n in let y = g.n - (i / g.n) in
-    Board.draw (x * (g.n * 10)) (y * (g.n * 10)) b;
+    Board.draw (x * (g.n * 20)) (y * (g.n * 20)) b;
     draw_b (i + 1) t
   end in draw_b 0 g.b
 
