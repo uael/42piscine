@@ -24,19 +24,19 @@ let isTaken (r, c) b =
 
 let rec dump b =
   let f i a =
-    print_string (Printf.sprintf "%s%c" (Player.string_of_mark a) (
-        if (((i+ 1) mod 3) = 0) && i <> 0 then '\n' else ' ' ))
+    print_string (Player.string_of_mark a) ;
+    print_char (if (((i+ 1) mod 3) = 0) && i <> 0 then '\n' else ' ')
   in List.iteri f b
 
 let make n : t =
   let f i =
     if i < 0 then failwith "negatif value"
     else Player.N
-  in List.init n f
+  in List.init (n * n) f
 
 let () =
   print_endline "** test Board module **\n";
-  let b = make 9 in
+  let b = make 3 in print_endline (Printf.sprintf "make %d" 3) ;
   dump b ; print_char '\n' ; print_endline "toggle (1, 2)" ;
   let bplus = toggle (1, 2) Player.X b in 
   dump bplus ;
