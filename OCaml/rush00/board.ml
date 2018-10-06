@@ -25,7 +25,7 @@ let isTaken (r, c) b =
 let rec dump b =
   let f i a =
     print_string (Player.string_of_mark a) ;
-    print_char (if (((i+ 1) mod 3) = 0) && i <> 0 then '\n' else ' ')
+    print_char (if (((i + 1) mod 3) = 0) && i <> 0 then '\n' else ' ')
   in List.iteri f b
 
 let make n : t =
@@ -35,4 +35,9 @@ let make n : t =
   in m (n * n)
 
 let draw dx dy b =
-  let f i m = 
+  let f i m =
+    let x = (i mod 3) in let y = (i / 3) in
+    print_int i ; print_string ": x -> "; print_int x ; print_string " y ->" ; print_int y ; print_char '\n' ;
+    Graphics.moveto (dx + (x * 20)) (dy - (y * 20));
+    Graphics.draw_string (Player.string_of_mark m)
+  in List.iteri f b
