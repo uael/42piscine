@@ -20,5 +20,11 @@ profile:
 debug:
 	$(OCB) -tag debug main.byte
 
-test: native
+run: native
 	./main.native
+
+native-test:
+	$(OCB) test.native
+
+test: native-test
+	./test.native
