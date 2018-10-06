@@ -1,2 +1,9 @@
+let player_test () =
+  let p = Player.makeIA Player.X in Player.dump p;
+  let p = Player.makeHuman Player.X "Bob" in Player.dump p;
+  let p = Player.makeIA Player.O in Player.dump p;
+  let p = Player.makeHuman Player.O "Bob" in Player.dump p
+
+
 let () =
-  print_endline "rush00"
+  player_test ()
