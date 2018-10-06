@@ -1,14 +1,26 @@
 module Player = struct
-  type s = X | O | None
+  type m = X | O | N
   type k = IA | Human
   type t = (s * k * string)
 
-  let ask p =
-  let toString p =
+  let string_of_mark = function
+  | X -> "X"
+  | O -> "O"
+  | _ -> "_"
+
+  let string_of_kind = function
+  | IA -> "IA"
+  | Human -> "Human"
+
+  let name_of = function
+  | (_, _, n) -> n
+
+  let string_of = function
+  | (m, k, n) -> (string_of_mark m) ^ ": " ^ n ^ " (" (string_of_kind k) ^ ")"
 end
 
 module Board = struct
-  type t = Player.s list
+  type t = Player.m list
 
   (* return a new board *)
   let toggle x y p = function
