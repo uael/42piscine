@@ -1,7 +1,7 @@
 module Player = struct
   type m = X | O | N
   type k = IA | Human
-  type t = (s * k * string)
+  type t = (m * k * string)
 
   let string_of_mark = function
   | X -> "X"
@@ -17,6 +17,10 @@ module Player = struct
 
   let string_of = function
   | (m, k, n) -> (string_of_mark m) ^ ": " ^ n ^ " (" (string_of_kind k) ^ ")"
+
+  let ask = function
+  | (m, IA, n) -> (0 ,0)
+  | (m, Human, n) -> (0 ,0)
 end
 
 module Board = struct
