@@ -23,16 +23,16 @@ let board_test () =
   print_endline ("istaken (1, 2) -> " ^ (string_of_bool (Board.isTaken (1, 2) bplus))) ;
   print_endline ("istaken (2, 3) -> " ^ (string_of_bool (Board.isTaken (2, 3) bplus)))
 
-(*let game_test () =*)
-  (*print_endline "** test Game module **\n";*)
-  (*Graphics.open_graph ("");*)
-  (*let po = Player.makeHuman Player.O "Bob" in*)
-  (*let px = Player.makeHuman Player.X "Jil" in*)
-  (*let game = Game.make 3 po px in*)
-  (*game.draw game*)
+let game_test () =
+  print_endline "** test Game module **\n";
+  Graphics.open_graph ("");
+  let po = Player.makeHuman Player.O "Bob" in
+  let px = Player.makeHuman Player.X "Jil" in
+  let game = Game.make 3 po px in
+  game.draw game
 
 let () =
   player_test ();
   board_test ();
-  (*game_test ()*)
+  game_test ()
 
