@@ -15,13 +15,20 @@ let player_test () =
 
 
 let board_test () =
-  print_endline "** test Board module **\n";
-  let b = Board.make 3 in print_endline (Printf.sprintf "make %d" 3) ;
-  Board.dump b ; print_char '\n' ; print_endline "toggle (1, 2)" ;
-  let bplus = Board.toggle (1, 2) Player.X b in 
-  Board.dump bplus ;
-  print_endline ("istaken (1, 2) -> " ^ (string_of_bool (Board.isTaken (1, 2) bplus))) ;
-  print_endline ("istaken (2, 3) -> " ^ (string_of_bool (Board.isTaken (2, 3) bplus)))
+  print_endline "** test Board module **";
+  let b = Board.make 3 in
+  let b = Board.toggle (2, 2) Player.X b in 
+  let b = Board.toggle (0, 2) Player.X b in 
+  let b = Board.toggle (0, 2) Player.O b in 
+  let b = Board.toggle (1, 1) Player.O b in 
+  let b = Board.toggle (0, 0) Player.O b in 
+  let b = Board.toggle (2, 2) Player.O b in 
+  Board.dump b ;
+  let status = Board.winner_of b in
+  match status with
+  | Player.N -> print_endline "game in progresse"
+  | Player.O -> print_endline "O win the game"
+  | Player.X -> print_endline "X win the game"
 
 let game_test () =
   print_endline "** test Game module **\n";
@@ -32,4 +39,4 @@ let game_test () =
   Game.run game 0
 
 let () =
-  board_test ()
+  board_test()

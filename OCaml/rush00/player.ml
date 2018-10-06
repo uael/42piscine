@@ -1,7 +1,7 @@
 type m = X | O | N
 type k = IA | Human
 type t = { m:m; k:k; n:string }
-type a = | Move of (int * int) | New | Exit
+type a = Move of (int * int) | New | Exit
 
 let string_of_mark = function
 | X -> "X"

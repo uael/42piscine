@@ -51,23 +51,27 @@ let isTaken (r, c) b =
   loop b.p 0
 
 
-(* TODO debug that ! *)
 let winner_of b =
   let same value value1 = value in
   let win p i =
     let rec check (y, x) opey opex =
       if ((y < 0) || (y >= b.n)) || ((x < 0) || (x >= b.n)) then true
       else
-        let newi = y + (x * b.n) in 
+        let newi = x + (y * b.n) in 
         if ((newi < 0) || (newi >= (List.length b.p))) then false else
           let newp = List.nth b.p newi in
-          if p <> newp then false else check ((opey y 1), (opex x 1)) opey opex
+          if p <> newp then false
+          else check ((opey y 1), (opex x 1)) opey opex
     in
     let y = i / b.n in let x = i mod b.n in
-      ( (check ((y - 1), x) (-) same) && ( check ((y + 1), x) (+) same ) ) ||
-      ( (check (y, (x - 1)) same (-)) && ( check (y, (x + 1)) same (+) ) ) ||
-      ( (check ((y + 1), (x + 1)) (+) (+)) && ( check ((y - 1), (x - 1)) (-) (-) ) ) ||
-      ( (check ((y + 1), (x - 1)) (+) (-) ) && ( check ((y - 1), (x + 1)) (-) (+) ) )
+    let top = check ((y - 1), x) (-) same in let bottom = check ((y + 1), x) (+) same in
+    let left = check (y, (x - 1)) same (-) in let rigth = check (y, (x + 1)) same (+) in
+    let bottomRigth = check ((y + 1), (x + 1)) (+) (+) in let topLeft = check ((y - 1), (x - 1)) (-) (-) in
+    let bottomLeft = check ((y + 1), (x - 1)) (+) (-) in let topRigth = check ((y - 1), (x + 1)) (-) (+) in
+    ((top && (y > 0)) && (bottom && (y < (b.n - 1)))) ||
+    ((left && (x > 0)) && (rigth && (x < (b.n - 1)))) ||
+    ((bottomRigth && (y > 0) && (x < (b.n - 1))) && (topLeft && (y < (b.n - 1)) && (x > 0))) ||
+    ((bottomLeft && (y > 0) && (x > 0)) && (topRigth && (y < (b.n - 1)) && (x < (b.n -1))))
   in
   let rec loop l i =
     match l with
