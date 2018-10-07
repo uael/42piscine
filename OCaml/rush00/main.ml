@@ -1,6 +1,6 @@
 let usage filename =
   print_string filename ; print_string ": ";
-  print_string "size 3 .. 6 Player1 [Player2]"
+  print_string "size 3 .. 6 Player1 [Player2]\n"
 
 let () =
   let argv = Array.to_list Sys.argv in
@@ -13,6 +13,6 @@ let () =
     if n < 3 || n > 6 then usage filename
     else
       let po = Player.makeHuman Player.O (List.nth argv 2) in
-      let px = if len < 4 then Player.makeIA Player.X else Player.makeHuman Player.X (List.nth argv 3) in
+      let px = if len < 4 then Player.makeAI Player.X else Player.makeHuman Player.X (List.nth argv 3) in
       let game = Game.make n po px in
       Game.run game 0
