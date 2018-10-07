@@ -1,11 +1,11 @@
 type m = X | O | N
-type k = IA | Human
+type k = AI | Human
 type t = { m:m; k:k; n:string }
 type a = Move of (int * int) | New | Exit
 let make m k n    = { m=m; k=k; n=n }
 
 let makeHuman m n = make m Human n
-let makeIA m      = make m IA ""
+let makeAI m      = make m AI ""
 
 let string_of_mark = function
 | X -> "X"
@@ -13,20 +13,20 @@ let string_of_mark = function
 | _ -> "_"
 
 let string_of_kind = function
-| IA -> "IA"
+| AI -> "AI"
 | Human -> "Human"
 
 let mark_of p =
   p.m
 
 let string_of p =
-  (string_of_mark p.m) ^ ": " ^ if p.k = IA then string_of_kind IA
+  (string_of_mark p.m) ^ ": " ^ if p.k = AI then string_of_kind AI
   else (p.n ^ " (" ^ (string_of_kind p.k) ^ ")")
 
 let dump p = print_endline (string_of p)
 
 let ask_trm p n =
-  if p.k = IA then
+  if p.k = AI then
     (Random.self_init (); Move(Random.int n, Random.int (n * n)))
   else let rec rd () =
     let ln = read_line () in
@@ -43,7 +43,7 @@ let ask_trm p n =
   in rd ()
 
 let ask_gfx p =
-  if p.k = IA then
+  if p.k = AI then
     (Random.self_init (); Move(Random.int 8, Random.int 8))
   else let rec rd () =
     let (r, c) = (Graphics.read_key (), Graphics.read_key ()) in
