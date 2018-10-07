@@ -77,5 +77,6 @@ let rec run g i =
     in match get_mv () with
     | Player.Exit -> (print_endline "Bye xo xo!")
     | Player.New -> run (make g.n g.o g.x) 0
-    | Player.Move(r, c) -> let g = toggle (r, c) p g in run g (i + 1)
+    | Player.Move(r, c) -> let g = toggle (r, c) p g in
+      run g (i + 1)
   end

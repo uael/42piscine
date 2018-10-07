@@ -13,7 +13,6 @@ let player_test () =
     (*| (r, c) -> print_endline ((string_of_int r) ^ ", " ^ (string_of_int c))*)
   (*end*)
 
-
 let board_test () =
   print_endline "** test Board module **";
   let b = Board.make 3 in

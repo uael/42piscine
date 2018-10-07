@@ -1,18 +1,18 @@
-
+type res = None | Mark of Player.m
 type s = INPROGRESS | FINISH
 type t = {
   p : Player.m list ; 
   n : int ;
-  s : s
+  s : s ;
+  res : res
 }
-
 let make n : t =
   let rec loop = function
   | 0 -> []
   | i -> Player.N::(loop (i - 1))
   in 
   let list_player = loop (n * n) in
-  { p = list_player; n = n; s=INPROGRESS}
+  { p = list_player; n = n; s=INPROGRESS; res=None}
 
 let mark_of (r, c) b =
   let i = c + (r * b.n) in
@@ -53,17 +53,14 @@ let winner_of b =
   in
   let rec loop l i =
     match l with
-    | [] -> Player.N
+    | [] -> 
+      if (List.for_all (fun p -> p <> Player.N) b.p) then Mark(Player.N) else None
     | hd :: tl when hd = Player.N -> loop tl (i + 1)
-    | hd :: tl ->
-      if win hd i then
-        hd
-      else
-        loop tl (i + 1)
+    | hd :: tl -> if win hd i then Mark(hd) else loop tl (i + 1)
   in loop b.p 0
 
 let is_not_legal (r, c) b =
-  if (winner_of b) != Player.N then true else
+  if (winner_of b) != None then true else
     let i = c + (r * b.n) in
     let f = function 
       | (Player.X : Player.m) | Player.O -> true
@@ -79,12 +76,9 @@ let toggle (r, c) m b =
   let i = c + (r * b.n) in
   let f index e = if index <> i then e else m in
   let newp = List.mapi f b.p in
-  let news =
-    match (List.for_all (fun p -> p <> Player.N) newp) with
-    | true -> FINISH
-    | false -> INPROGRESS
-  in
-  {p = newp; n = b.n; s=news;}
+  let win = winner_of ({p=newp;n=b.n;s=b.s;res=b.res}) in
+  let news = if win != None then FINISH else b.s in
+  {p = newp; n = b.n; s=news;res=win}
 
 let rec dump b =
   let f i a =
