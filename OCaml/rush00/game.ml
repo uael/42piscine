@@ -2,8 +2,8 @@ type t = { b:Board.t list; o:Player.t; x:Player.t; n:int }
 
 let makeGrid n =
   let rec m = function
-  | 0 -> []
-  | i -> (Board.make n)::m (i - 1)
+    | 0 -> []
+    | i -> (Board.make n)::m (i - 1)
   in m (n * n)
 
 let make n po px = { b = makeGrid n; o = po; x = px; n = n }
@@ -17,12 +17,12 @@ let is_not_legal (r, c) g =
 let toggle (r, c) p g =
   let idx = (((r / g.n) * g.n) + (c / g.n)) in
   let b = List.mapi
-    (fun i e ->
-      if i = idx then Board.toggle (r mod g.n, c mod g.n) (Player.mark_of p) e
-      else e)
-    g.b
+      (fun i e ->
+         if i = idx then Board.toggle (r mod g.n, c mod g.n) (Player.mark_of p) e
+         else e)
+      g.b
   in copy g b
-  
+
 let winner_of g =
   let b = List.map Board.winner_of g.b in
   let same value value1 = value in
@@ -86,23 +86,31 @@ let draw_trm g =
 let draw_gfx g =
   Graphics.clear_graph ();
   let rec draw_b i = function
-  | [] -> ()
-  | b::t -> begin
-    let x = i mod g.n in let y = g.n - (i / g.n) in
-    Board.draw (x * (g.n * 20)) (y * (g.n * 20)) b;
-    draw_b (i + 1) t
-  end in draw_b 0 g.b
+    | [] -> ()
+    | b::t -> begin
+        let x = i mod g.n in let y = g.n - (i / g.n) in
+        Board.draw (x * (g.n * 20)) (y * (g.n * 20)) b;
+        draw_b (i + 1) t
+      end in draw_b 0 g.b
 
 let rec run g i =
+  let rec retry () =
+    print_string "retry ? (yes no): ";
+    let rep = read_line () in
+    if rep = "yes" then true
+    else if rep = "no" then false
+    else retry ()
+  in
   let p = match i with
     | i when (i mod 2) = 0 -> g.o
     | i -> g.x
-  in begin
+  in
+  begin
     draw_trm g;
     print_endline ((Player.string_of p) ^ "'s turn to play.");
     let rec get_mv () =
-      let mv = Player.ask_trm p g.n in match mv with
-      | Player.Move(r, c) when is_not_legal (r, c) g ->
+    let mv = Player.ask_trm p g.n in match mv with
+    | Player.Move(r, c) when is_not_legal (r, c) g ->
         (if p.k != Player.IA then print_endline "Illegal move."; get_mv ())
       | _ -> mv
     in match get_mv () with
@@ -110,8 +118,11 @@ let rec run g i =
     | Player.New -> run (make g.n g.o g.x) 0
     | Player.Move(r, c) -> let g = toggle (r, c) p g in
       match winner_of g with
-      | Board.Mark(Player.O) -> draw_trm g; print_endline "O wins the game!"
-      | Board.Mark(Player.X) -> draw_trm g; print_endline "X wins the game!"
-      | Board.Mark(Player.N) -> draw_trm g; print_endline "Nobody wins the game.."
+      | Board.Mark(Player.O) ->
+        draw_trm g; print_endline "O wins the game!" ; if retry() then run (make g.n g.o g.x) 0
+      | Board.Mark(Player.X) ->
+        draw_trm g; print_endline "X wins the game!" ; if retry() then run (make g.n g.o g.x) 0
+      | Board.Mark(Player.N) ->
+        draw_trm g; print_endline "Nobody wins the game.." ; if retry() then run (make g.n g.o g.x) 0
       | _ -> run g (i + 1)
   end
