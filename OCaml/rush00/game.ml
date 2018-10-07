@@ -34,7 +34,7 @@ let winner_of g =
         if ((newi < 0) || (newi >= (List.length b))) then false else
           let newp = List.nth b newi in match (m, newp) with
           | (Board.Mark(a), Board.Mark(b)) when a <> b -> false
-          | (_, None) | (None, _) -> false
+          | (_, Board.None) | (Board.None, _) -> false
           | (_, _) -> check ((opey y 1), (opex x 1)) opey opex
     in
     let y = i / g.n in let x = i mod g.n in
@@ -87,12 +87,74 @@ let draw_trm g =
 let draw_gfx g =
   Graphics.clear_graph ();
   let rec draw_b i = function
-    | [] -> ()
-    | b::t -> begin
-        let x = i mod g.n in let y = g.n - (i / g.n) in
-        Board.draw (x * (g.n * 20)) (y * (g.n * 20)) b;
-        draw_b (i + 1) t
-      end in draw_b 0 g.b
+  | [] -> ()
+  | b::t -> begin
+    let x = i mod g.n in let y = g.n - (i / g.n) in
+    Board.draw (x * (g.n * 20)) (y * (g.n * 20)) b;
+    draw_b (i + 1) t
+  end in draw_b 0 g.b
+
+let ai_ask g =
+  let rec ver = function
+    | r when r = g.n -> Player.NoMove
+    | r ->
+      begin
+        let rec line = function
+        | c when c = g.n -> []
+        | c ->
+          let idx = ((r * g.n) + c)
+          in (c, (List.nth g.b idx)) :: line (c + 1)
+        in let l = line 0
+        in let ll = List.map (fun (c, b) -> Board.winner_of b) l
+        in if (List.for_all
+          (fun m -> m = Board.None || m = Board.Mark(Player.X))
+            ll) then
+          let rec f = function
+          | [] -> ver (r + 1)
+          | (c, b)::t when (Board.winner_of b) = Board.None -> begin
+            match Board.find_mv b with
+            | Player.NoMove -> f t
+            | Player.Move(br, bc) -> Player.Move((r * g.n) + br, (c * g.n) + bc)
+          end
+          | h::t -> f t
+          in f l
+        else ver (r + 1)
+      end
+  in let rec hor = function
+    | c when c = g.n -> Player.NoMove
+    | c ->
+      begin
+        let rec line = function
+        | r when r = g.n -> []
+        | r ->
+          let idx = ((r * g.n) + c)
+          in (r, (List.nth g.b idx)) :: line (r + 1)
+        in let l = line 0
+        in let ll = List.map (fun (r, b) -> Board.winner_of b) l
+        in if (List.for_all
+          (fun m -> m = Board.None || m = Board.Mark(Player.X))
+            ll) then
+          let rec f = function
+          | [] -> hor (c + 1)
+          | (r, b)::t when (Board.winner_of b) = Board.None -> begin
+            match Board.find_mv b with
+            | Player.NoMove -> f t
+            | Player.Move(br, bc) -> Player.Move((r * g.n) + br, (c * g.n) + bc)
+          end
+          | h::t -> f t
+          in f l
+        else hor (c + 1)
+      end
+  in match ver 0 with
+  | Player.NoMove -> begin
+    match hor 0 with
+    | Player.NoMove -> let rec lol () =
+      let mv = (Random.self_init (); Move(Random.int (n * n), Random.int (n * n)))
+      in if is_not_legal mv g then lol () else mv
+      in lol ()
+    | m -> m
+  end
+  | m -> m
 
 let rec run g i =
   let rec retry () =
@@ -110,12 +172,13 @@ let rec run g i =
     draw_trm g;
     print_endline ((Player.string_of p) ^ "'s turn to play.");
     let rec get_mv () =
+    if (Player.mark_of p) = Player.X then ai_ask g else
     let mv = Player.ask_trm p g.n in match mv with
-    | Player.Move(r, c) when is_not_legal (r, c) g ->
+      | Player.Move(r, c) when is_not_legal (r, c) g ->
         (if p.k != Player.AI then print_endline "Illegal move."; get_mv ())
       | _ -> mv
     in match get_mv () with
-    | Player.Exit -> (print_endline "Bye xo xo!")
+    | Player.NoMove | Player.Exit -> (print_endline "Bye xo xo!")
     | Player.New -> run (make g.n g.o g.x) 0
     | Player.Move(r, c) -> let g = toggle (r, c) p g in
       match winner_of g with

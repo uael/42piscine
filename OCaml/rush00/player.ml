@@ -1,7 +1,7 @@
 type m = X | O | N
 type k = AI | Human
 type t = { m:m; k:k; n:string }
-type a = Move of (int * int) | New | Exit
+type a = Move of (int * int) | New | Exit | NoMove
 let make m k n    = { m=m; k=k; n=n }
 
 let makeHuman m n = make m Human n
@@ -27,7 +27,7 @@ let dump p = print_endline (string_of p)
 
 let ask_trm p n =
   if p.k = AI then
-    (Random.self_init (); Move(Random.int n, Random.int (n * n)))
+    (Random.self_init (); Move(Random.int (n * n), Random.int (n * n)))
   else let rec rd () =
     let ln = read_line () in
     if String.length ln != 3 then (print_endline "Incorrect format."; rd ())

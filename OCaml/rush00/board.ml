@@ -59,6 +59,39 @@ let winner_of b =
     | hd :: tl -> if win hd i then Mark(hd) else loop tl (i + 1)
   in loop b.p 0
 
+let rec find_mv b =
+  let rec ver = function
+    | r when r = b.n -> Player.NoMove
+    | r -> begin
+      let rec line = function
+      | c when c = b.n -> []
+      | c ->
+        let idx = ((r * b.n) + c)
+        in ((r, c), (List.nth b.p idx)) :: line (c + 1)
+      in let rec find = function
+      | [] -> ver (r + 1)
+      | ((r, c), m)::t when m = Player.N -> Player.Move(r, c)
+      | h::t -> find t
+      in find (line 0)
+    end
+  in let rec hor = function
+    | c when c = b.n -> Player.NoMove
+    | c -> begin
+      let rec line = function
+      | r when r = b.n -> []
+      | r ->
+        let idx = ((r * b.n) + c)
+        in ((r, c), (List.nth b.p idx)) :: line (r + 1)
+      in let rec find = function
+      | [] -> hor (c + 1)
+      | ((r, c), m)::t when m = Player.N -> Player.Move(r, c)
+      | h::t -> find t
+      in find (line 0)
+    end
+  in match ver 0 with
+  | Player.NoMove -> hor 0
+  | m -> m
+
 let is_not_legal (r, c) b =
   if (winner_of b) != None then true else
     let i = c + (r * b.n) in
