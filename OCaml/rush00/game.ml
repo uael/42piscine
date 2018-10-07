@@ -22,6 +22,37 @@ let toggle (r, c) p g =
       else e)
     g.b
   in copy g b
+  
+let winner_of g =
+  let b = List.map Board.winner_of g.b in
+  let same value value1 = value in
+  let win m i =
+    let rec check (y, x) opey opex =
+      if ((y < 0) || (y >= g.n)) || ((x < 0) || (x >= g.n)) then true
+      else
+        let newi = x + (y * g.n) in 
+        if ((newi < 0) || (newi >= (List.length b))) then false else
+          let newp = List.nth b newi in
+          if m <> newp then false
+          else check ((opey y 1), (opex x 1)) opey opex
+    in
+    let y = i / g.n in let x = i mod g.n in
+    let top = check ((y - 1), x) (-) same in let bottom = check ((y + 1), x) (+) same in
+    let left = check (y, (x - 1)) same (-) in let rigth = check (y, (x + 1)) same (+) in
+    let bottomRigth = check ((y + 1), (x + 1)) (+) (+) in let topLeft = check ((y - 1), (x - 1)) (-) (-) in
+    let bottomLeft = check ((y + 1), (x - 1)) (+) (-) in let topRigth = check ((y - 1), (x + 1)) (-) (+) in
+    ((top && (y > 0)) && (bottom && (y < (g.n - 1)))) ||
+    ((left && (x > 0)) && (rigth && (x < (g.n - 1)))) ||
+    ((bottomRigth && (y > 0) && (x < (g.n - 1))) && (topLeft && (y < (g.n - 1)) && (x > 0))) ||
+    ((bottomLeft && (y > 0) && (x > 0)) && (topRigth && (y < (g.n - 1)) && (x < (g.n -1))))
+  in
+  let rec loop l i =
+    match l with
+    | [] -> 
+      if (List.for_all (fun p -> p <> Board.Mark(Player.N)) b) then Board.Mark(Player.N) else Board.None
+    | hd :: tl when hd = Board.Mark(Player.N) -> loop tl (i + 1)
+    | hd :: tl -> if win hd i then hd else loop tl (i + 1)
+  in loop b 0
 
 let draw_trm g =
   let b = List.map (fun b -> Board.string_of b) g.b in
@@ -78,5 +109,9 @@ let rec run g i =
     | Player.Exit -> (print_endline "Bye xo xo!")
     | Player.New -> run (make g.n g.o g.x) 0
     | Player.Move(r, c) -> let g = toggle (r, c) p g in
-      run g (i + 1)
+      match winner_of g with
+      | Board.Mark(Player.O) -> draw_trm g; print_endline "O wins the game!"
+      | Board.Mark(Player.X) -> draw_trm g; print_endline "X wins the game!"
+      | Board.Mark(Player.N) -> draw_trm g; print_endline "Nobody wins the game.."
+      | _ -> run g (i + 1)
   end
