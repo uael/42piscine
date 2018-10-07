@@ -9,10 +9,10 @@ let makeGrid n =
 let make n po px = { b = makeGrid n; o = po; x = px; n = n }
 let copy g b = { b = b; o = g.o; x = g.x; n = g.n }
 
-let is_taken (r, c) g =
+let is_not_legal (r, c) g =
   let idx = (((r / g.n) * g.n) + (c / g.n)) in
   let b = List.nth g.b idx in
-  Board.isTaken (r mod g.n, c mod g.n) b
+  Board.is_not_legal (r mod g.n, c mod g.n) b
 
 let toggle (r, c) p g =
   let idx = (((r / g.n) * g.n) + (c / g.n)) in
@@ -25,23 +25,32 @@ let toggle (r, c) p g =
 
 let draw_trm g =
   let b = List.map (fun b -> Board.string_of b) g.b in
-  let rec loop_line = function
-  | line when line = g.n -> ()
-  | line -> begin
-    let rec loop_bi = function
-    | bi when bi = (g.n * g.n) && (line + 1) <> g.n ->
-      print_endline "----"
-    | bi when bi = (g.n * g.n) -> ()
-    | bi -> begin
-      let bs = List.nth b bi in
-      let s = List.nth bs line in print_string s;
-      print_char (if ((bi + 1) mod g.n) <> 0 then '|' else '\n');
-      loop_bi (bi + 1)
-    end
-    in loop_bi 0;
-    loop_line (line + 1)
-  end
-  in loop_line 0
+  let rec loop_game_line = function
+    | r when r = g.n -> ()
+    | r ->
+      begin
+        let rec loop_game_col = function
+          | c when c = g.n -> ()
+          | c ->
+            begin
+              let rec loop_board_line = function
+                | bline when bline = g.n -> ()
+                | bline ->
+                  begin
+                    let idx = ((r * g.n) + bline) in
+                    let bs = List.nth b idx in
+                    let s = List.nth bs c in print_string s ;
+                    print_char (if ((idx + 1) mod g.n) <> 0 then '|' else '\n') ;
+                    loop_board_line (bline + 1)
+                  end
+              in loop_board_line 0 ;
+              loop_game_col (c + 1)
+            end
+        in loop_game_col 0 ;
+        List.iter (fun x -> print_string "--") b ; print_char '\n';
+        loop_game_line (r + 1)
+      end
+  in loop_game_line 0
 
 let draw_gfx g =
   Graphics.clear_graph ();
@@ -62,7 +71,7 @@ let rec run g i =
     print_endline ((Player.string_of p) ^ "'s turn to play.");
     let rec get_mv () =
       let mv = Player.ask_trm p in match mv with
-      | Player.Move(r, c) when is_taken (r, c) g ->
+      | Player.Move(r, c) when is_not_legal (r, c) g ->
         (print_endline "Illegal move."; get_mv ())
       | _ -> mv
     in match get_mv () with

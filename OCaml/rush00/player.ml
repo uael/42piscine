@@ -48,7 +48,7 @@ let ask_gfx p =
     | ('n', 'n') -> New
     | ('e', 'e') -> Exit
     | ('1'..'9', '1'..'9') ->
-      Move(((int_of_char r) - uno), ((int_of_char c) - uno))
+      Move(((int_of_char c) - uno), ((int_of_char r) - uno))
     | (_, _) -> print_endline "Incorrect format."; rd ()
   in rd ()
 

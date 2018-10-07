@@ -1,6 +1,9 @@
+
+type s = INPROGRESS | FINISH
 type t = {
   p : Player.m list ; 
-  n : int
+  n : int ;
+  s : s
 }
 
 let make n : t =
@@ -9,17 +12,7 @@ let make n : t =
   | i -> Player.N::(loop (i - 1))
   in 
   let list_player = loop (n * n) in
-  { p = list_player; n = n }
-
-
-let toggle (r, c) m b =
-  let i = c + (r * b.n) in
-  let f index e =
-    if index <> i then e
-    else m
-  in
-  let newl = List.mapi f b.p in
-  {p = newl; n = b.n}
+  { p = list_player; n = n; s=INPROGRESS}
 
 let mark_of (r, c) b =
   let i = c + (r * b.n) in
@@ -35,21 +28,6 @@ let mark_of (r, c) b =
       else loop tl (acc + 1)
   in
   loop b.p 0
-
-let isTaken (r, c) b =
-  let i = c + (r * b.n) in
-  let f = function 
-    | (Player.X : Player.m) | Player.O -> true
-    | _ -> false
-  in
-  let rec loop l acc = match l with
-    | [] -> false
-    | hd :: tl ->
-      if acc = i then f hd
-      else loop tl (acc + 1)
-  in
-  loop b.p 0
-
 
 let winner_of b =
   let same value value1 = value in
@@ -77,8 +55,36 @@ let winner_of b =
     match l with
     | [] -> Player.N
     | hd :: tl when hd = Player.N -> loop tl (i + 1)
-    | hd :: tl -> if win hd i then hd else loop tl (i + 1)
+    | hd :: tl ->
+      if win hd i then
+        hd
+      else
+        loop tl (i + 1)
   in loop b.p 0
+
+let is_not_legal (r, c) b =
+  if (winner_of b) != Player.N then true else
+    let i = c + (r * b.n) in
+    let f = function 
+      | (Player.X : Player.m) | Player.O -> true
+      | _ -> false
+    in
+    let rec loop l acc = match l with
+      | [] -> false
+      | hd :: tl -> if acc = i then f hd else loop tl (acc + 1)
+    in
+    loop b.p 0
+
+let toggle (r, c) m b =
+  let i = c + (r * b.n) in
+  let f index e = if index <> i then e else m in
+  let newp = List.mapi f b.p in
+  let news =
+    match (List.for_all (fun p -> p <> Player.N) newp) with
+    | true -> FINISH
+    | false -> INPROGRESS
+  in
+  {p = newp; n = b.n; s=news;}
 
 let rec dump b =
   let f i a =
@@ -89,14 +95,13 @@ let rec dump b =
 let draw dx dy b =
   let f i m =
     let x = (i mod b.n) in let y = (i / b.n) in
-    print_int i ; print_string ": x -> "; print_int x ; print_string " y ->" ; print_int y ; print_char '\n' ;
     Graphics.moveto (dx + (x * 20)) (dy - (y * 20));
     Graphics.draw_string (Player.string_of_mark m)
   in List.iteri f b.p
 
 let string_of b : string list = 
   let rec loop l acc line = match l with
-    | [] -> line :: []
+    | [] -> []
     | hd :: tl when (((acc + 1) mod b.n) = 0 && acc <> 0) ->
       (line ^ " " ^ Player.string_of_mark hd) :: (loop tl (acc + 1) "")
     | hd :: tl -> let sepa = if ((acc mod b.n) = 0) then "" else " "  in
