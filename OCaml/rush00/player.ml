@@ -19,6 +19,9 @@ let string_of_kind = function
 let mark_of p =
   p.m
 
+let kind_of p =
+  p.k
+
 let string_of p =
   (string_of_mark p.m) ^ ": " ^ if p.k = AI then string_of_kind AI
   else (p.n ^ " (" ^ (string_of_kind p.k) ^ ")")

@@ -113,8 +113,8 @@ let ai_ask g =
           | [] -> ver (r + 1)
           | (c, b)::t when (Board.winner_of b) = Board.None -> begin
             match Board.find_mv b with
-            | Player.NoMove -> f t
             | Player.Move(br, bc) -> Player.Move((r * g.n) + br, (c * g.n) + bc)
+            | _ -> f t
           end
           | h::t -> f t
           in f l
@@ -138,19 +138,21 @@ let ai_ask g =
           | [] -> hor (c + 1)
           | (r, b)::t when (Board.winner_of b) = Board.None -> begin
             match Board.find_mv b with
-            | Player.NoMove -> f t
             | Player.Move(br, bc) -> Player.Move((r * g.n) + br, (c * g.n) + bc)
+            | _ -> f t
           end
           | h::t -> f t
           in f l
         else hor (c + 1)
       end
   in match ver 0 with
-  | Player.NoMove -> begin
+  | Player.NoMove | Player.Exit | Player.New -> begin
     match hor 0 with
-    | Player.NoMove -> let rec lol () =
-      let mv = (Random.self_init (); Move(Random.int (n * n), Random.int (n * n)))
-      in if is_not_legal mv g then lol () else mv
+    | Player.NoMove | Player.Exit | Player.New ->
+      let rec lol () =
+      let (r, c) = (Random.self_init ();
+        (Random.int (g.n * g.n), Random.int (g.n * g.n)))
+      in if is_not_legal (r, c) g then Player.Move(r, c) else lol ()
       in lol ()
     | m -> m
   end
@@ -175,7 +177,7 @@ let rec run g i =
     if (Player.mark_of p) = Player.X then ai_ask g else
     let mv = Player.ask_trm p g.n in match mv with
       | Player.Move(r, c) when is_not_legal (r, c) g ->
-        (if p.k != Player.AI then print_endline "Illegal move."; get_mv ())
+        (if (Player.kind_of p) != Player.AI then print_endline "Illegal move."; get_mv ())
       | _ -> mv
     in match get_mv () with
     | Player.NoMove | Player.Exit -> (print_endline "Bye xo xo!")
