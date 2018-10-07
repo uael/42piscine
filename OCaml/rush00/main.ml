@@ -1,6 +1,6 @@
 let usage filename =
   print_string filename ; print_string ": ";
-  print_string "size 3 .. 6 Player1 [Player2]"
+  print_string "size 3 .. 6 Player1 [Player2]\n"
 
 let () =
   let argv = Array.to_list Sys.argv in
