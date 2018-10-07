@@ -100,4 +100,18 @@ let string_of b : string list =
       (line ^ " " ^ Player.string_of_mark hd) :: (loop tl (acc + 1) "")
     | hd :: tl -> let sepa = if ((acc mod b.n) = 0) then "" else " "  in
       loop tl (acc + 1) (line ^ sepa ^ (Player.string_of_mark hd))
-  in loop b.p 0 ""
+  in 
+  let rec loop2 l acc line v = match l with
+    | [] -> []
+    | hd :: tl when (((acc + 1) mod b.n) = 0 && acc <> 0) ->
+      (line ^ " " ^ v) :: (loop2 tl (acc + 1) "" v)
+    | hd :: tl -> let sepa = if ((acc mod b.n) = 0) then "" else " "  in
+      loop2 tl (acc + 1) (line ^ sepa ^ v) v
+  in
+  if b.res != None then
+    let value = match b.res with
+      | Mark(Player.O) -> "O"
+      | Mark(Player.N) -> "N"
+      | Mark(Player.X) -> "X"
+    in loop2 b.p 0 "" value
+  else loop b.p 0 ""
