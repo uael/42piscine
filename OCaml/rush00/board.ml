@@ -113,5 +113,6 @@ let string_of b : string list =
       | Mark(Player.O) -> "O"
       | Mark(Player.N) -> "N"
       | Mark(Player.X) -> "X"
+      | _ -> ""
     in loop2 b.p 0 "" value
   else loop b.p 0 ""

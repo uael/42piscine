@@ -13,5 +13,6 @@ let () =
     if n < 3 || n > 6 then usage filename
     else
       let po = Player.makeHuman Player.O (List.nth argv 2) in
-      let px = if len < 4 then Player.makeIA Player.X else Player.makeHuman Player.X (List.nth argv 3)
-      in let game = Game.make n po px in Game.run game 0
+      let px = if len < 4 then Player.makeIA Player.X else Player.makeHuman Player.X (List.nth argv 3) in
+      let game = Game.make n po px in
+      Game.run game 0

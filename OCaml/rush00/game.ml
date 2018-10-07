@@ -101,7 +101,7 @@ let rec run g i =
     draw_trm g;
     print_endline ((Player.string_of p) ^ "'s turn to play.");
     let rec get_mv () =
-      let mv = Player.ask_trm p in match mv with
+      let mv = Player.ask_trm p g.n in match mv with
       | Player.Move(r, c) when is_not_legal (r, c) g ->
         (print_endline "Illegal move."; get_mv ())
       | _ -> mv

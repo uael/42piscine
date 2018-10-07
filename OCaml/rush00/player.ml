@@ -25,9 +25,9 @@ let string_of p =
 
 let dump p = print_endline (string_of p)
 
-let ask_trm p =
+let ask_trm p n =
   if p.k = IA then
-    (Random.self_init (); Move(Random.int 8, Random.int 8))
+    (Random.self_init (); Move(Random.int n, Random.int (n * n)))
   else let rec rd () =
     let ln = read_line () in
     if String.length ln != 3 then (print_endline "Incorrect format."; rd ())
