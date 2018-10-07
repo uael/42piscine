@@ -174,10 +174,11 @@ let rec run g i =
     draw_trm g;
     print_endline ((Player.string_of p) ^ "'s turn to play.");
     let rec get_mv () =
-    if (Player.mark_of p) = Player.X then ai_ask g else
+    if (Player.mark_of p) = Player.X &&
+      (Player.kind_of p) = Player.AI then ai_ask g else
     let mv = Player.ask_trm p g.n in match mv with
       | Player.Move(r, c) when is_not_legal (r, c) g ->
-        (if (Player.kind_of p) != Player.AI then print_endline "Illegal move."; get_mv ())
+        print_endline "Illegal move."; get_mv ()
       | _ -> mv
     in match get_mv () with
     | Player.NoMove | Player.Exit -> (print_endline "Bye xo xo!")
