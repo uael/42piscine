@@ -41,4 +41,4 @@ let game_test () =
   Game.run game 0
 
 let () =
-  game_test ()
+  board_test ()

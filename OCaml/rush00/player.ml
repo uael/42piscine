@@ -2,6 +2,10 @@ type m = X | O | N
 type k = IA | Human
 type t = { m:m; k:k; n:string }
 type a = Move of (int * int) | New | Exit
+let make m k n    = { m=m; k=k; n=n }
+
+let makeHuman m n = make m Human n
+let makeIA m      = make m IA ""
 
 let string_of_mark = function
 | X -> "X"
@@ -51,7 +55,3 @@ let ask_gfx p =
       Move(((int_of_char c) - uno), ((int_of_char r) - uno))
     | (_, _) -> print_endline "Incorrect format."; rd ()
   in rd ()
-
-let make m k n    = { m=m; k=k; n=n }
-let makeHuman m n = make m Human n
-let makeIA m      = make m IA ""
