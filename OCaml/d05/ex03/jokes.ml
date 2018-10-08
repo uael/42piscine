@@ -11,7 +11,7 @@ let read f =
   let ln = input_line ic in
   let len = String.length ln in
   let cnt = ref 0 in
-  for i = 0 to len - 1 do if ln.[i] = ',' then incr cnt done in
+  for i = 0 to len - 1 do if ln.[i] = ';' then incr cnt done in
   let a = (Array.make len "") in
 
   close_in ic
