@@ -5,7 +5,9 @@
 
 # include <iostream>
 
-namespace zob {\
+namespace zob {
+
+	class Form;
 
 	class Bureaucrat {
 	public:
@@ -24,7 +26,9 @@ namespace zob {\
 		Bureaucrat(Bureaucrat const &src);
 		~Bureaucrat();
 
-		Bureaucrat &operator=(Bureaucrat const &src);\
+		Bureaucrat &operator=(Bureaucrat const &src);
+
+		void signForm(Form &form) const;
 
 		std::string getName() const;
 		int getGrade() const;

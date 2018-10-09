@@ -28,7 +28,17 @@ namespace zob {
 	Bureaucrat &Bureaucrat::operator=(Bureaucrat const &src) {
 		grade = src.grade;
 		return *this;
-	}\
+	}
+
+	void Bureaucrat::signForm(Form &form) const {
+		try {
+			form.beSigned(*this);
+			std::cout << *this << " signs form " << form.getName() << std::endl;
+		} catch (Form::GradeTooLowException &e) {
+			std::cout << *this << " cannot sign form " << form.getName()
+			          << " because " << e.what() << std::endl;
+		}
+	}
 
 	void Bureaucrat::incGrade() throw(GradeTooHighException) {
 		if (grade - 1 < 1)
