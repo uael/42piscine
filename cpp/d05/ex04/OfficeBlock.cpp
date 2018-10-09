@@ -41,12 +41,14 @@ namespace zob {
 		this->intern = &intern;
 	}
 
-	void OfficeBlock::setSigner(Bureaucrat &signer) {
+	void OfficeBlock::setSigner(Bureaucrat &signer)
+		throw(NoTurfuCloneException) {
 		if (executor == &signer) throw NoTurfuCloneException();
 		this->signer = &signer;
 	}
 
-	void OfficeBlock::setExecutor(Bureaucrat &executor) {
+	void OfficeBlock::setExecutor(Bureaucrat &executor)
+		throw(NoTurfuCloneException) {
 		if (signer == &executor) throw NoTurfuCloneException();
 		this->executor = &executor;
 	}

@@ -30,8 +30,8 @@ namespace zob {
 						Intern::InvalidFormNameException,
 						Form::GradeTooLowException);
 		void setIntern(Intern &intern);
-		void setSigner(Bureaucrat &signer);
-		void setExecutor(Bureaucrat &executor);
+		void setSigner(Bureaucrat &signer) throw(NoTurfuCloneException);
+		void setExecutor(Bureaucrat &executor) throw(NoTurfuCloneException);
 
 	private:
 		Intern *intern;
