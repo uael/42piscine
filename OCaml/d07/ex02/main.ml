@@ -1,7 +1,10 @@
 let () =
+  Random.self_init ();
   let a = new People.people "Malou" in
   let b = new Doctor.doctor "Malou+" 999 (new People.people "Malou++") in
   let c = new Dalek.dalek in begin
+    print_endline c#to_string;
+
     a#talk;
     b#talk;
     c#talk;
@@ -17,5 +20,6 @@ let () =
     b#kick 50;
     b#kick 50;
     b#kick 50;
-    c#exterminate a
+    c#exterminate a;
+    c#die
   end
