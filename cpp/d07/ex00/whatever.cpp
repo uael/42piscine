@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 
 template <typename T>
 void swap(T &a, T &b) {
