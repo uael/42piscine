@@ -7,6 +7,6 @@ macro(zob T)
     target_include_directories(${T} PRIVATE ${T})
 endmacro()
 
-zob(ex01)
+zob(ex02)
 #zob(ex01)
 #zob(ex02)
