@@ -174,7 +174,7 @@ public:
 	}
 
 private:
-	char mem[9999];
+	char mem[0xffff];
 	std::vector<char> buffer;
 	Insts &insts;
 };
